@@ -426,7 +426,9 @@ class Time
       d = Date._strptime(date, format)
       raise ArgumentError, "invalid strptime format - `#{format}'" unless d
       if seconds = d[:seconds]
-        t = Time.at(seconds)
+        sec_fraction = d[:sec_fraction]
+        usec = sec_fraction ? sec_fraction * 1000000 : 0
+        t = Time.at(seconds, usec)
         if zone = d[:zone]
           force_zone!(t, zone)
         end
